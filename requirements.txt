@@ -1,0 +1,18 @@
+# Core AI agent
+google-adk>=0.2.0
+litellm>=1.40.0
+openrouter>=0.1.0  # Make sure to set correct version
+google-genai>=0.2.0
+
+# HTTP requests
+requests>=2.31.0
+
+# Optional for local testing
+Flask>=3.0
+flask-cors>=4.0
+
+# Environment variables
+python-dotenv>=1.0
+
+# OpenAI SDK (if needed for fallback models)
+openai>=0.27.0

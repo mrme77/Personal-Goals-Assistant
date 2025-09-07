@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Your personal AI planning assistant" />
+  <title>Goal → Plan 🤖</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <div class="chat-window">
+      <div class="chat-header">
+        <h1>Goal → Plan</h1>
+        <p class="lead">Your personal AI planning assistant</p>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <!-- Chat messages will be appended here -->
+      </div>
+      <div class="chat-footer">
+        <form id="goalForm">
+          <textarea id="goalInput" placeholder="Example: Ship MVP with chat agent by the end of the quarter" rows="1"></textarea>
+          <button id="submitBtn">Send</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
