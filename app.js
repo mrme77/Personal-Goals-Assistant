@@ -5,7 +5,9 @@ const submitBtn = document.getElementById('submitBtn');
 
 // Your Vercel backend endpoint
 //const API_URL = 'https://personal-goal-assistant-back-end.vercel.app/api/agent';
-const API_URL = "https://personal-goal-assistant-back-end.vercel.app/api/agent";
+//const API_URL = "https://personal-goal-assistant-back-end.vercel.app/api/agent";
+const API_URL = 'https://personal-goal-assistant-back-end.vercel.app/api/agent';
+
 
 
 //const API_URL = 'http://localhost:5000/api/agent';
