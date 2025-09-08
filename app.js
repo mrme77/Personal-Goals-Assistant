@@ -1,5 +1,4 @@
-const API_URL = 'personal-goal-assistant-back-i5bxfhl0e.vercel.app';
-
+const API_URL = 'https://personal-goal-assistant-back-i5bxfhl0e.vercel.app/api/agent';
 
 const form = document.getElementById('goalForm');
 const goalInput = document.getElementById('goalInput');
@@ -39,17 +38,19 @@ async function streamAgentResponse(goal, messageContent) {
   });
 
   if (!res.ok) {
-    let errorMessage = '';
+    // Only read the body ONCE to avoid "body stream already read" error
+    let errorMessage;
     try {
       const data = await res.json();
       errorMessage = data.error || JSON.stringify(data, null, 2);
     } catch {
-      errorMessage = await res.text();
+      errorMessage = 'An error occurred and the response could not be parsed as JSON.';
     }
     typeText(messageContent, `Error: ${errorMessage}`);
     return;
   }
 
+  // Handle streaming response (Server-Sent Events)
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
