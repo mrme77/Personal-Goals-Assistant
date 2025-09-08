@@ -4,7 +4,8 @@ const chatBody = document.getElementById('chatBody');
 const submitBtn = document.getElementById('submitBtn');
 
 // Your Vercel backend endpoint
-const API_URL = 'https://<your-vercel-app>.vercel.app/api/agent';
+//const API_URL = 'https://<your-vercel-app>.vercel.app/api/agent';
+const API_URL = 'http://localhost:5000/api/agent';
 
 form.addEventListener('submit', async (ev) => {
   ev.preventDefault();
