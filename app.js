@@ -1,4 +1,5 @@
-const API_URL = 'https://personal-goal-assistant-back-end.vercel.app/api/agent';
+const API_URL = 'personal-goal-assistant-back-i5bxfhl0e.vercel.app';
+
 
 const form = document.getElementById('goalForm');
 const goalInput = document.getElementById('goalInput');
