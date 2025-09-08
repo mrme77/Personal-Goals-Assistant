@@ -1,4 +1,4 @@
-//const API_URL = 'https://personal-goal-assistant-back-end.vercel.app';
+const API_URL = 'https://personal-goal-assistant-back-end.vercel.app';
 const form = document.getElementById('goalForm');
 const goalInput = document.getElementById('goalInput');
 const chatBody = document.getElementById('chatBody');
