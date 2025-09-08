@@ -1,4 +1,5 @@
-const API_URL = 'https://personal-goal-assistant-back-end.vercel.app';
+const API_URL = 'https://personal-goal-assistant-back-end.vercel.app/api/agent';
+
 const form = document.getElementById('goalForm');
 const goalInput = document.getElementById('goalInput');
 const chatBody = document.getElementById('chatBody');
@@ -22,7 +23,6 @@ async function handleFormSubmit(ev) {
   try {
     await streamAgentResponse(goal, messageContent);
   } catch (err) {
-    messageContent.textContent = '';
     typeText(messageContent, `Request failed: ${err.message}`);
   } finally {
     submitBtn.disabled = false;
@@ -30,20 +30,19 @@ async function handleFormSubmit(ev) {
 }
 
 async function streamAgentResponse(goal, messageContent) {
-  // Directly use the deployed backend URL
-  const res = await fetch('https://personal-goal-assistant-back-end.vercel.app/api/agents', {
+  const res = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ goal }),
   });
 
   if (!res.ok) {
-    let errorMessage;
+    let errorMessage = 'An error occurred.';
     try {
       const data = await res.json();
       errorMessage = data.error || JSON.stringify(data, null, 2);
     } catch {
-      errorMessage = 'An error occurred and the response could not be parsed as JSON.';
+      errorMessage = 'Response could not be parsed as JSON.';
     }
     typeText(messageContent, `Error: ${errorMessage}`);
     return;
@@ -60,7 +59,7 @@ async function streamAgentResponse(goal, messageContent) {
     if (value) {
       buffer += decoder.decode(value, { stream: true });
       const parts = buffer.split('\n\n');
-      buffer = parts.pop(); // keep incomplete part
+      buffer = parts.pop();
       for (const part of parts) {
         if (part.startsWith('data: ')) {
           const data = part.slice(6);
