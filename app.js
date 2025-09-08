@@ -1,5 +1,4 @@
-const API_URL = 'https://personal-goal-assistant-back-end.vercel.app';
-
+//const API_URL = 'https://personal-goal-assistant-back-end.vercel.app';
 const form = document.getElementById('goalForm');
 const goalInput = document.getElementById('goalInput');
 const chatBody = document.getElementById('chatBody');
@@ -31,14 +30,14 @@ async function handleFormSubmit(ev) {
 }
 
 async function streamAgentResponse(goal, messageContent) {
-  const res = await fetch(API_URL, {
+  // Directly use the deployed backend URL
+  const res = await fetch('https://personal-goal-assistant-back-end.vercel.app/api/agents', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ goal }),
   });
 
   if (!res.ok) {
-    // Only read the body ONCE to avoid "body stream already read" error
     let errorMessage;
     try {
       const data = await res.json();
@@ -50,7 +49,6 @@ async function streamAgentResponse(goal, messageContent) {
     return;
   }
 
-  // Handle streaming response (Server-Sent Events)
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
@@ -61,8 +59,8 @@ async function streamAgentResponse(goal, messageContent) {
     done = readerDone;
     if (value) {
       buffer += decoder.decode(value, { stream: true });
-      let parts = buffer.split('\n\n');
-      buffer = parts.pop(); // Last part may be incomplete
+      const parts = buffer.split('\n\n');
+      buffer = parts.pop(); // keep incomplete part
       for (const part of parts) {
         if (part.startsWith('data: ')) {
           const data = part.slice(6);
