@@ -1,18 +1,13 @@
+const API_URL = 'https://personal-goal-assistant-back-end.vercel.app/api/agent';
+
 const form = document.getElementById('goalForm');
 const goalInput = document.getElementById('goalInput');
 const chatBody = document.getElementById('chatBody');
 const submitBtn = document.getElementById('submitBtn');
 
-// Your Vercel backend endpoint
-//const API_URL = 'https://personal-goal-assistant-back-end.vercel.app/api/agent';
-//const API_URL = "https://personal-goal-assistant-back-end.vercel.app/api/agent";
-const API_URL = 'https://personal-goal-assistant-back-end.vercel.app/api/agent';
+form.addEventListener('submit', handleFormSubmit);
 
-
-
-//const API_URL = 'http://localhost:5000/api/agent';
-
-form.addEventListener('submit', async (ev) => {
+async function handleFormSubmit(ev) {
   ev.preventDefault();
   const goal = goalInput.value.trim();
   if (!goal) return;
@@ -22,33 +17,69 @@ form.addEventListener('submit', async (ev) => {
   submitBtn.disabled = true;
 
   const agentMessageElement = appendMessage('agent', 'Thinking...');
+  const messageContent = agentMessageElement.querySelector('.message-content');
+  messageContent.textContent = '';
 
   try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ goal }),
-    });
-
-    const data = await res.json();
-    const messageContent = agentMessageElement.querySelector('.message-content');
-    messageContent.textContent = '';
-
-    if (!res.ok) {
-      const errorMessage = data.error || JSON.stringify(data, null, 2);
-      typeText(messageContent, `Error: ${errorMessage}`);
-    } else {
-      const plan = data.result || JSON.stringify(data, null, 2);
-      typeText(messageContent, plan);
-    }
+    await streamAgentResponse(goal, messageContent);
   } catch (err) {
-    const messageContent = agentMessageElement.querySelector('.message-content');
     messageContent.textContent = '';
     typeText(messageContent, `Request failed: ${err.message}`);
   } finally {
     submitBtn.disabled = false;
   }
-});
+}
+
+async function streamAgentResponse(goal, messageContent) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ goal }),
+  });
+
+  if (!res.ok) {
+    let errorMessage = '';
+    try {
+      const data = await res.json();
+      errorMessage = data.error || JSON.stringify(data, null, 2);
+    } catch {
+      errorMessage = await res.text();
+    }
+    typeText(messageContent, `Error: ${errorMessage}`);
+    return;
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let done = false;
+
+  while (!done) {
+    const { value, done: readerDone } = await reader.read();
+    done = readerDone;
+    if (value) {
+      buffer += decoder.decode(value, { stream: true });
+      let parts = buffer.split('\n\n');
+      buffer = parts.pop(); // Last part may be incomplete
+      for (const part of parts) {
+        if (part.startsWith('data: ')) {
+          const data = part.slice(6);
+          if (data === '[DONE]') {
+            done = true;
+            break;
+          } else if (data.startsWith('Error:')) {
+            typeText(messageContent, data);
+            done = true;
+            break;
+          } else {
+            messageContent.textContent += data;
+            chatBody.scrollTop = chatBody.scrollHeight;
+          }
+        }
+      }
+    }
+  }
+}
 
 function appendMessage(sender, text) {
   const messageWrapper = document.createElement('div');
