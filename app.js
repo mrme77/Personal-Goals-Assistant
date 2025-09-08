@@ -4,6 +4,70 @@ const form = document.getElementById('goalForm');
 const goalInput = document.getElementById('goalInput');
 const chatBody = document.getElementById('chatBody');
 const submitBtn = document.getElementById('submitBtn');
+// Plexus animation for #plexus-canvas
+const canvas = document.getElementById("plexus-canvas");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+const numParticles = 80;
+const maxDistance = 120;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+// Create particles
+for (let i = 0; i < numParticles; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 1.2,
+    vy: (Math.random() - 0.5) * 1.2,
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw particles
+  ctx.fillStyle = "rgba(233,69,96,0.8)"; // neon pink dots
+  particles.forEach((p) => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Move particles
+    p.x += p.vx;
+    p.y += p.vy;
+
+    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+  });
+
+  // Draw lines
+  ctx.strokeStyle = "rgba(233,69,96,0.2)";
+  ctx.lineWidth = 1;
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < maxDistance) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
 
 form.addEventListener('submit', handleFormSubmit);
 
