@@ -133,6 +133,22 @@ h1 {
   /* Markdown styles */
   font-size: 1rem;
 }
+.message-content code {
+  background: #222;
+  color: #fff; /* Change from red to white */
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+.message-content pre {
+  background: #222;
+  color: #fff; /* Ensure code blocks are also white */
+  padding: 10px;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
 .message-content table {
   width: 100%;
   border-collapse: collapse;
