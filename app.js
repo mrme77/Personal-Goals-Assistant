@@ -4,6 +4,8 @@ const form = document.getElementById('goalForm');
 const goalInput = document.getElementById('goalInput');
 const chatBody = document.getElementById('chatBody');
 const submitBtn = document.getElementById('submitBtn');
+const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+
 // Plexus animation for #plexus-canvas
 const canvas = document.getElementById("plexus-canvas");
 const ctx = canvas.getContext("2d");
@@ -82,7 +84,7 @@ async function handleFormSubmit(ev) {
 
   const agentMessageElement = appendMessage('agent', 'Thinking...');
   const messageContent = agentMessageElement.querySelector('.message-content');
-  messageContent.textContent = '';
+  messageContent.innerHTML = '';
 
   try {
     await streamAgentResponse(goal, messageContent);
@@ -112,10 +114,18 @@ async function streamAgentResponse(goal, messageContent) {
     return;
   }
 
+  if (!res.body) {
+    typeText(messageContent, "No response body from server.");
+    return;
+  }
+
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
   let buffer = '';
   let done = false;
+
+  // For streaming Markdown, accumulate and render
+  let accumulated = '';
 
   while (!done) {
     const { value, done: readerDone } = await reader.read();
@@ -135,7 +145,9 @@ async function streamAgentResponse(goal, messageContent) {
             done = true;
             break;
           } else {
-            messageContent.textContent += data;
+            accumulated += data;
+            // Render Markdown as HTML
+            messageContent.innerHTML = marked.parse(accumulated);
             chatBody.scrollTop = chatBody.scrollHeight;
           }
         }
@@ -154,7 +166,14 @@ function appendMessage(sender, text) {
 
   const messageContent = document.createElement('div');
   messageContent.classList.add('message-content');
-  messageContent.textContent = text;
+
+  if (sender === 'agent') {
+    // Render Markdown for agent messages
+    messageContent.innerHTML = marked.parse(text);
+  } else {
+    // Render plain text for user messages
+    messageContent.textContent = text;
+  }
 
   if (sender === 'user') {
     messageWrapper.appendChild(messageContent);
@@ -168,8 +187,10 @@ function appendMessage(sender, text) {
   chatBody.scrollTop = chatBody.scrollHeight;
   return messageWrapper;
 }
+
 function typeText(element, text) {
   let i = 0;
+  element.innerHTML = ''; // Clear previous content
   const typing = setInterval(() => {
     if (i < text.length) {
       element.textContent += text.charAt(i);
@@ -181,12 +202,16 @@ function typeText(element, text) {
   }, 15);
 }
 
-// function typeText(element, text) {
-//   let i = 0;
-//   const typing = setInterval(() => {
-//     if (i < text.length) {
-//       element.textContent += text.charAt(i);
-//       i++;
-//       chatBody.scrollTop = chatBody.scrollHeight;
-//     } else {
-//       clearInterval(typing);
+// Download PDF functionality
+downloadPdfBtn.addEventListener('click', () => {
+  html2canvas(chatBody).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new window.jspdf.jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
+    });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('chat.pdf');
+  });
+});
