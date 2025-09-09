@@ -259,3 +259,52 @@ button:disabled {
     height: 40px;
   }
 }
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.message-content h4,
+.message-content h5,
+.message-content h6 {
+  color: var(--accent-color);
+  margin: 16px 0 8px 0;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.message-content ul,
+.message-content ol {
+  margin: 8px 0 8px 24px;
+  padding-left: 20px;
+}
+
+.message-content li {
+  margin-bottom: 4px;
+}
+
+.message-content blockquote {
+  border-left: 4px solid var(--accent-color);
+  background: rgba(233,69,96,0.07);
+  margin: 12px 0;
+  padding: 8px 16px;
+  color: #ffd6e0;
+  font-style: italic;
+}
+
+.message-content hr {
+  border: none;
+  border-top: 2px solid var(--accent-color);
+  margin: 16px 0;
+}
+
+.message-content strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.message-content em {
+  color: #ffd6e0;
+}
+
+.message-content p {
+  margin: 8px 0;
+}
