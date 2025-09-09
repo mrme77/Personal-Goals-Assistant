@@ -168,7 +168,6 @@ function appendMessage(sender, text) {
   chatBody.scrollTop = chatBody.scrollHeight;
   return messageWrapper;
 }
-
 function typeText(element, text) {
   let i = 0;
   const typing = setInterval(() => {
@@ -178,3 +177,16 @@ function typeText(element, text) {
       chatBody.scrollTop = chatBody.scrollHeight;
     } else {
       clearInterval(typing);
+    }
+  }, 15);
+}
+
+// function typeText(element, text) {
+//   let i = 0;
+//   const typing = setInterval(() => {
+//     if (i < text.length) {
+//       element.textContent += text.charAt(i);
+//       i++;
+//       chatBody.scrollTop = chatBody.scrollHeight;
+//     } else {
+//       clearInterval(typing);
