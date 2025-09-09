@@ -130,12 +130,47 @@ h1 {
   white-space: pre-wrap;
   line-height: 1.6;
   box-shadow: 0 0 10px rgba(233, 69, 96, 0.2);
+  /* Markdown styles */
+  font-size: 1rem;
+}
+.message-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+}
+.message-content th,
+.message-content td {
+  border: 1px solid var(--border-color);
+  padding: 6px 10px;
+  text-align: left;
+  background: rgba(255,255,255,0.07);
+}
+.message-content th {
+  background: rgba(233,69,96,0.15);
+  color: var(--accent-color);
+}
+.message-content code {
+  background: #222;
+  color: #e94560;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+.message-content pre {
+  background: #222;
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  overflow-x: auto;
 }
 
 /* === Footer === */
 .chat-footer {
   padding: 20px;
   border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 #goalForm {
