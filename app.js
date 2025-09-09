@@ -162,7 +162,8 @@ function appendMessage(sender, text) {
 
   const avatar = document.createElement('div');
   avatar.classList.add('avatar');
-  avatar.textContent = sender === 'user' ? 'User' : '🤖';
+ avatar.textContent = sender === 'user' ? 'U' : '😎';
+
 
   const messageContent = document.createElement('div');
   messageContent.classList.add('message-content');
