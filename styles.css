@@ -121,7 +121,6 @@ h1 {
 .agent .avatar {
   background: var(--agent-avatar-bg);
 }
-
 .message-content {
   background: rgba(255, 255, 255, 0.1);
   padding: 12px 16px;
@@ -131,25 +130,17 @@ h1 {
   line-height: 1.6;
   box-shadow: 0 0 10px rgba(233, 69, 96, 0.2);
   font-size: 1rem;
-  color: #ffffff; /* Ensures chatbot text is white */
+  color: #ffffff; /* ensures all message text is white */
 }
 
-.message-content code {
-  background: #222;
-  color: #ffffff; /* Changed from red/pink to white */
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.95em;
-}
-
+/* Inline code and code blocks both white */
+.message-content code,
 .message-content pre {
+  color: #ffffff !important; /* force white for all code/text */
   background: #222;
-  color: #ffffff; /* Ensures pre/code blocks are white */
-  padding: 10px;
-  border-radius: 6px;
-  overflow-x: auto;
 }
 
+/* Optional: remove pink glow from message box */
 .message-content table {
   width: 100%;
   border-collapse: collapse;
