@@ -123,6 +123,11 @@ h1 {
 }
 
 /* === Message content === */
+.message-content,
+.message-content * {
+  color: #ffffff !important; /* all text forced white */
+}
+
 .message-content {
   background: rgba(255, 255, 255, 0.1);
   padding: 12px 16px;
@@ -131,15 +136,13 @@ h1 {
   white-space: pre-wrap;
   line-height: 1.6;
   font-size: 1rem;
-  color: #ffffff; /* all message text white */
-  box-shadow: none; /* optional: remove pink glow */
+  box-shadow: none; /* optional */
 }
 
-/* Inline code and code blocks */
 .message-content code,
 .message-content pre {
   background: #222;
-  color: #ffffff !important; /* force all code text white */
+  color: #ffffff !important;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.95em;
@@ -151,20 +154,6 @@ h1 {
   overflow-x: auto;
 }
 
-/* Markdown headings */
-.message-content h1,
-.message-content h2,
-.message-content h3,
-.message-content h4,
-.message-content h5,
-.message-content h6 {
-  color: var(--accent-color);
-  margin: 16px 0 8px 0;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-/* Lists */
 .message-content ul,
 .message-content ol {
   margin: 8px 0 8px 24px;
@@ -175,13 +164,11 @@ h1 {
   margin-bottom: 4px;
 }
 
-/* Blockquotes */
 .message-content blockquote {
   border-left: 4px solid var(--accent-color);
   background: rgba(233,69,96,0.07);
   margin: 12px 0;
   padding: 8px 16px;
-  color: #ffffff; /* force white text */
   font-style: italic;
 }
 
