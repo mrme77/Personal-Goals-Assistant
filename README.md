@@ -1,37 +1,181 @@
-# Personal Goals Assistant
+# 🧭 Personal Goals Assistant
 
-This is a simple and intuitive frontend application to help you manage and track your personal goals.
+An interactive **AI-powered web app** that helps users turn personal goals into structured, actionable plans.  
 
-## Description
+The frontend is lightweight (HTML, CSS, JavaScript) and can connect to a backend API for **LLM-based plan generation** and **persistent storage**.
 
-The Personal Goals Assistant provides a clean and easy-to-use interface for you to stay on top of your ambitions. You can add new goals, mark them as complete, and see a clear overview of your progress.
+---
 
-## Features
+## ✨ Features
+- Add, edit, and delete personal goals
+- Track progress visually in a clean UI
+- Local persistence using `localStorage` (fallback mode)
+- Optional backend integration for AI-driven planning
+- Simple, frontend-only deployment possible
 
-*   **Add and Manage Goals:** Quickly add new goals to your list.
-*   **Track Progress:** Mark goals as completed to track what you have achieved.
-*   **Simple Interface:** A clean and minimalist design to keep you focused.
+---
 
-## Tech Stack
+## ⚙️ Configuration
 
-*   **Frontend:**
-    *   HTML5
-    *   CSS3
-    *   JavaScript
+The frontend can call a backend API for persistent storage and AI-driven plan generation.  
+Check `app.js` for configuration (e.g., `API_BASE_URL`).
 
-## Backend
+**Suggested config options:**
 
-The backend for this project is a separate service hosted on Vercel. This frontend application communicates with the backend API to store and retrieve goal data.
+- `API_BASE_URL` — backend base URL (e.g., `https://<your-vercel-backend>.vercel.app/api`)  
+- `USE_LOCAL_STORAGE` — toggle to use browser `localStorage` (for testing only — this won’t replace the AI backend)
 
-## Getting Started
+> **Note:** Without the backend, localStorage fallback will only persist raw goals; it **will not generate AI plans**.
 
-To run this project locally, follow these simple steps:
+---
 
-1.  Clone this repository to your local machine.
-2.  Open the `index.html` file in your favorite web browser.
+## 🏗 Architecture
 
-That's it! You can now start managing your goals.
+```text
+┌──────────────────────────┐
+│        UI Layer          │
+│  (index.html, styles.css)│
+│  - Goal list             │
+│  - Input form            │
+│  - Progress view         │
+└─────────────┬────────────┘
+              │
+              ▼
+┌──────────────────────────┐
+│   Application Logic      │
+│        (app.js)          │
+│  - Render functions      │
+│  - Event handlers        │
+│  - Storage (API/local)   │
+└─────────────┬────────────┘
+              │
+              ▼
+   ┌────────────────────┐
+   │     Backend API     │  (optional, e.g. Vercel)
+   │ - Persistent storage│
+   │ - LLM integration   │
+   └────────────────────┘
+```
+# API Documentation
 
-## Contributing
+## API Endpoints (Suggested)
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue.
+If connected to a backend, expected endpoints may include:
+
+### Get All Goals
+```http
+GET /api/goals
+```
+Returns a list of all goals.
+
+### Create New Goal
+```http
+POST /api/goals
+```
+**Request Body:**
+```json
+{
+  "title": "Buy a bike",
+  "dueDate": "2025-10-01"
+}
+```
+
+### Update Goal
+```http
+PUT /api/goals/:id
+```
+Update goal (e.g., mark complete)
+
+**Request Body:**
+```json
+{
+  "completed": true
+}
+```
+
+### Delete Goal
+```http
+DELETE /api/goals/:id
+```
+Delete a specific goal.
+
+> **Note:** Adapt to match your actual backend implementation.
+
+## 🧑‍💻 Development
+
+Keep logic modular in `app.js`:
+
+- **UI render functions** (e.g., `renderGoalList`)
+- **Storage layer** (API vs localStorage)
+- **Event handlers** (add / edit / delete)
+
+### Recommended Enhancements
+- Add `config.js` for API settings
+- Add linting (**ESLint**) + formatting (**Prettier**)
+
+## 🧪 Testing
+
+### Manual Testing
+- Add goals, mark complete, refresh page (check persistence)
+
+### Unit Testing
+- Extract pure functions and test with **Jest**
+
+### Integration Testing
+- Mock backend API calls for tests
+
+## 🌍 Deployment
+
+This app is static — deploy anywhere:
+
+- **GitHub Pages**
+- **Netlify**
+- **Vercel**
+- Any static hosting service
+
+> If paired with a backend, deploy backend separately (e.g., Vercel functions).
+
+## 🛠 Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| **Goals don't persist after refresh** | Check backend URL in `app.js` or verify localStorage is enabled |
+| **Style issues** | Ensure `styles.css` is linked in `index.html` |
+| **CORS errors** | Backend must allow your frontend origin |
+
+## 🗺 Roadmap
+
+- [ ] Add authentication for private goals
+- [ ] Support categories, due dates, and reminders
+- [ ] Add progress analytics (weekly/monthly)
+- [ ] Import/export goals (JSON)
+- [ ] Improve accessibility & mobile UX
+
+## 🤝 Contributing
+
+1. **Fork the repo**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feat/your-feature
+   ```
+3. **Commit your changes**
+   ```bash
+   git commit -m "feat: add new feature"
+   ```
+4. **Push to your fork**
+   ```bash
+   git push origin feat/your-feature
+   ```
+5. **Open a Pull Request**
+
+## 📜 License
+
+Licensed under the **MIT License**.  
+See `LICENSE` for details.
+
+## 📬 Contact
+
+Created by **@mrme77**.  
+Contributions, issues, and feature requests are welcome!
+```
+
