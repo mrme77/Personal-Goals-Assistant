@@ -1,97 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Goal Planner Chatbot</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Goal Planner Chatbot</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="chat-container">
-            <div class="chat-header">
-                <div class="header-content">
-                    <div class="bot-avatar">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="header-text">
-                        <h1>Goal Planner</h1>
-                        <p>Tell me your goal and I'll create a personalized plan for you!</p>
-                    </div>
-                </div>
-                <div class="header-decoration">
-                    <div class="pulse-dot"></div>
-                </div>
-            </div>
-            
-            <div class="chat-messages" id="chatMessages">
-                <div class="message bot-message">
-                    <div class="message-avatar">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="message-content">
-                        <div class="message-bubble">
-                            <p>Hello! I'm your AI Goal Planner. What would you like to achieve? For example, you could say "I want to learn how to play the guitar in 5 weeks" and I'll create a detailed plan for you!</p>
-                        </div>
-                        <div class="message-time">Just now</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="chat-input-container">
-                <div class="input-wrapper">
-                    <input type="text" id="messageInput" placeholder="Describe your goal..." autocomplete="off">
-                    <button id="sendButton" class="send-button">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-                <div class="input-hint">
-                    <i class="fas fa-lightbulb"></i>
-                    <span>Be specific about your goal and timeline for the best results!</span>
-                </div>
-            </div>
+  <div class="container">
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="header-content">
+          <div class="bot-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="header-text">
+            <h1>Goal Planner</h1>
+            <p>Tell me your goal and I'll create a personalized plan for you!</p>
+          </div>
         </div>
-        
-        <div class="features-panel">
-            <h3>What I can help you with:</h3>
-            <div class="feature-list">
-                <div class="feature-item">
-                    <i class="fas fa-target"></i>
-                    <span>Learning new skills</span>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-dumbbell"></i>
-                    <span>Fitness goals</span>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-briefcase"></i>
-                    <span>Career development</span>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-heart"></i>
-                    <span>Personal projects</span>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Educational goals</span>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-paint-brush"></i>
-                    <span>Creative pursuits</span>
-                </div>
-            </div>
+        <div class="header-decoration">
+          <div class="pulse-dot"></div>
         </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot-message">
+          <div class="message-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-bubble">
+              <p>Hello! I'm your AI Goal Planner. What would you like to achieve? For example, you could say "I want to learn how to play the guitar in 5 weeks" and I'll create a detailed plan for you!</p>
+            </div>
+            <div class="message-time">Just now</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-container">
+        <div class="input-wrapper">
+          <input type="text" id="messageInput" placeholder="Describe your goal..." autocomplete="off">
+          <button id="sendButton" class="send-button">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+        <div class="input-hint">
+          <i class="fas fa-lightbulb"></i>
+          <span>Be specific about your goal and timeline for the best results!</span>
+        </div>
+      </div>
     </div>
-    
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner">
-            <div class="spinner"></div>
-            <p>Creating your personalized plan...</p>
-        </div>
+
+    <div class="features-panel">
+      <h3>What I can help you with:</h3>
+      <div class="feature-list">
+        <div class="feature-item"><i class="fas fa-target"></i><span>Learning new skills</span></div>
+        <div class="feature-item"><i class="fas fa-dumbbell"></i><span>Fitness goals</span></div>
+        <div class="feature-item"><i class="fas fa-briefcase"></i><span>Career development</span></div>
+        <div class="feature-item"><i class="fas fa-heart"></i><span>Personal projects</span></div>
+        <div class="feature-item"><i class="fas fa-graduation-cap"></i><span>Educational goals</span></div>
+        <div class="feature-item"><i class="fas fa-paint-brush"></i><span>Creative pursuits</span></div>
+      </div>
     </div>
-    
-    <script src="app.js"></script>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Creating your personalized plan...</p>
+    </div>
+  </div>
+
+  <!-- ✅ Markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
+
