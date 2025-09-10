@@ -49,11 +49,11 @@ Check `app.js` for configuration (e.g., `API_BASE_URL`).
 └─────────────┬────────────┘
               │
               ▼
-   ┌────────────────────┐
-   │     Backend API     │  (Vercel)
-   │ - Persistent storage│
-   │ - LLM integration   │
-   └────────────────────┘
+┌----────────────────────-─┐
+│        Backend API       │ (Vercel)
+│      Persistent storage  │
+│      LLM integration     │
+└────────────────────------┘
 ```
 # API Documentation
 
