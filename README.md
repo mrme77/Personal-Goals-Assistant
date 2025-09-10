@@ -9,7 +9,6 @@ The frontend is lightweight (HTML, CSS, JavaScript) and can connect to a backend
 ## ✨ Features
 - Add, edit, and delete personal goals
 - Track progress visually in a clean UI
-- Local persistence using `localStorage` (fallback mode)
 - Optional backend integration for AI-driven planning
 - Simple, frontend-only deployment possible
 
@@ -146,6 +145,7 @@ This app is static — deploy anywhere:
 ## 🗺 Roadmap
 
 - [ ] Add authentication for private goals
+- [ ] Local persistence using `localStorage` (fallback mode)
 - [ ] Support categories, due dates, and reminders
 - [ ] Add progress analytics (weekly/monthly)
 - [ ] Import/export goals (JSON)
