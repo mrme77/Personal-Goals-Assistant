@@ -85,9 +85,9 @@ This app is static — deploy anywhere:
 - **GitHub Pages**
 - **Netlify**
 - **Vercel**
-- Any static hosting service
+- Any static hosting service (currently using github pages)
 
-> If paired with a backend, deploy backend separately (e.g., Vercel functions).
+> Deployed backend separately (e.g., Vercel functions).
 
 ## 🛠 Troubleshooting
 
