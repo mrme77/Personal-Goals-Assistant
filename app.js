@@ -8,8 +8,6 @@ const chatBody = document.getElementById('chatBody');
 const submitBtn = document.getElementById('submitBtn');
 const downloadPdfBtn = document.getElementById('downloadPdfBtn');
 
-// [Keep your plexus animation code as-is]
-
 form.addEventListener('submit', handleFormSubmit);
 
 async function handleFormSubmit(ev) {
@@ -25,104 +23,58 @@ async function handleFormSubmit(ev) {
   const messageContent = agentMessageElement.querySelector('.message-content');
 
   try {
-    await streamAgentResponse(goal, messageContent);
+    await getAgentResponse(goal, messageContent);
   } catch (err) {
-    console.error('Stream error:', err);
+    console.error('Request error:', err);
     messageContent.innerHTML = `<p><strong>Error:</strong> ${err.message}</p>`;
   } finally {
     submitBtn.disabled = false;
   }
 }
 
-async function streamAgentResponse(goal, messageContent) {
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ goal }),
-  });
-
-  if (!res.ok) {
-    let errorMessage = 'Request failed';
-    try {
-      const data = await res.json();
-      errorMessage = data.error || `HTTP ${res.status}`;
-    } catch {
-      errorMessage = `HTTP ${res.status} - ${res.statusText}`;
-    }
-    messageContent.innerHTML = `<p><strong>Error:</strong> ${errorMessage}</p>`;
-    return;
-  }
-
-  if (!res.body) {
-    messageContent.innerHTML = '<p><strong>Error:</strong> No response body from server.</p>';
-    return;
-  }
-
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '';
-  let accumulated = '';
-  let done = false;
-
-  // Clear the "Thinking..." message
-  messageContent.innerHTML = '';
-
+// **NEW: Simple JSON-based function instead of streaming**
+async function getAgentResponse(goal, messageContent) {
   try {
-    while (!done) {
-      const { value, done: readerDone } = await reader.read();
-      done = readerDone;
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ goal }),
+    });
 
-      if (value) {
-        const chunk = decoder.decode(value, { stream: true });
-        buffer += chunk;
+    // Parse JSON response
+    const data = await res.json();
 
-        // Process complete SSE messages
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || ''; // Keep incomplete line in buffer
+    if (!res.ok) {
+      const errorMessage = data.error || `HTTP ${res.status} - ${res.statusText}`;
+      messageContent.innerHTML = `<p><strong>Error:</strong> ${errorMessage}</p>`;
+      return;
+    }
 
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6); // Remove 'data: ' prefix
-            
-            if (data === '[DONE]') {
-              done = true;
-              break;
-            } else if (data.startsWith('Error:')) {
-              messageContent.innerHTML = `<p><strong>Error:</strong> ${data.slice(6)}</p>`;
-              return;
-            } else if (data.trim()) {
-              // Accumulate the data
-              accumulated += data;
-              
-              // Re-render the complete markdown
-              try {
-                messageContent.innerHTML = marked.parse(accumulated);
-                
-                // Auto-scroll to bottom
-                chatBody.scrollTop = chatBody.scrollHeight;
-              } catch (markdownError) {
-                console.error('Markdown parsing error:', markdownError);
-                // Fallback to plain text if markdown fails
-                messageContent.innerHTML = `<pre>${accumulated}</pre>`;
-              }
-            }
-          }
-        }
+    // Check if response was successful
+    if (!data.success) {
+      messageContent.innerHTML = `<p><strong>Error:</strong> ${data.error || 'Unknown error occurred'}</p>`;
+      return;
+    }
+
+    // Clear "Thinking..." and display the complete response
+    if (data.response && data.response.trim()) {
+      try {
+        messageContent.innerHTML = marked.parse(data.response);
+      } catch (markdownError) {
+        console.error('Markdown parsing error:', markdownError);
+        // Fallback to plain text with preserved formatting
+        messageContent.innerHTML = `<pre>${data.response}</pre>`;
       }
+    } else {
+      messageContent.innerHTML = '<p><strong>Error:</strong> No response content received.</p>';
     }
-  } catch (streamError) {
-    console.error('Stream processing error:', streamError);
-    messageContent.innerHTML = `<p><strong>Stream Error:</strong> ${streamError.message}</p>`;
-  }
 
-  // Final render to ensure everything is displayed
-  if (accumulated.trim()) {
-    try {
-      messageContent.innerHTML = marked.parse(accumulated);
-    } catch (finalError) {
-      console.error('Final markdown error:', finalError);
-      messageContent.innerHTML = `<pre>${accumulated}</pre>`;
-    }
+    // Auto-scroll to bottom
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+  } catch (error) {
+    console.error('Network or parsing error:', error);
+    messageContent.innerHTML = `<p><strong>Network Error:</strong> ${error.message}</p>`;
   }
 }
 
@@ -132,17 +84,14 @@ function appendMessage(sender, text) {
 
   const avatar = document.createElement('div');
   avatar.classList.add('avatar');
-  // Fixed avatar assignment
   avatar.textContent = sender === 'user' ? '😎' : '🤖';
 
   const messageContent = document.createElement('div');
   messageContent.classList.add('message-content');
 
   if (sender === 'agent') {
-    // For agent messages, we'll handle markdown in the streaming function
     messageContent.innerHTML = text;
   } else {
-    // Plain text for user messages
     messageContent.textContent = text;
   }
 
@@ -160,16 +109,17 @@ function appendMessage(sender, text) {
 }
 
 // Keep your PDF download function as-is
-// downloadPdfBtn.addEventListener('click', () => {
-//   html2canvas(chatBody).then(canvas => {
-//     const imgData = canvas.toDataURL('image/png');
-//     const pdf = new window.jspdf.jsPDF({
-//       orientation: 'portrait',
-//       unit: 'px',
-//       format: [canvas.width, canvas.height]
-//     });
-//     pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-//     pdf.save('goal-plan.pdf');
-//   });
+downloadPdfBtn.addEventListener('click', () => {
+  html2canvas(chatBody).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new window.jspdf.jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
+    });
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save('goal-plan.pdf');
+  });
 });
+
 
