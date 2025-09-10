@@ -55,51 +55,6 @@ Check `app.js` for configuration (e.g., `API_BASE_URL`).
 │      LLM integration     │
 └────────────────────------┘
 ```
-# API Documentation
-
-## API Endpoints (Suggested)
-
-If connected to a backend, expected endpoints may include:
-
-### Get All Goals
-```http
-GET /api/goals
-```
-Returns a list of all goals.
-
-### Create New Goal
-```http
-POST /api/goals
-```
-**Request Body:**
-```json
-{
-  "title": "Buy a bike",
-  "dueDate": "2025-10-01"
-}
-```
-
-### Update Goal
-```http
-PUT /api/goals/:id
-```
-Update goal (e.g., mark complete)
-
-**Request Body:**
-```json
-{
-  "completed": true
-}
-```
-
-### Delete Goal
-```http
-DELETE /api/goals/:id
-```
-Delete a specific goal.
-
-> **Note:** Adapt to match your actual backend implementation.
-
 ## 🧑‍💻 Development
 
 Keep logic modular in `app.js`:
