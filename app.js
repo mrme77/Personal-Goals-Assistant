@@ -4,9 +4,6 @@ const form = document.getElementById('goalForm');
 const goalInput = document.getElementById('goalInput');
 const chatBody = document.getElementById('chatBody');
 const submitBtn = document.getElementById('submitBtn');
-const downloadPdfBtn = document.getElementById('downloadPdfBtn');
-
-// [Keep your plexus animation code as-is]
 
 form.addEventListener('submit', handleFormSubmit);
 
@@ -130,7 +127,6 @@ function appendMessage(sender, text) {
 
   const avatar = document.createElement('div');
   avatar.classList.add('avatar');
-  // Fixed avatar assignment
   avatar.textContent = sender === 'user' ? '😎' : '🤖';
 
   const messageContent = document.createElement('div');
@@ -156,17 +152,3 @@ function appendMessage(sender, text) {
   chatBody.scrollTop = chatBody.scrollHeight;
   return messageWrapper;
 }
-
-// PDF download function
-downloadPdfBtn.addEventListener('click', () => {
-  html2canvas(chatBody).then(canvas => {
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new window.jspdf.jsPDF({
-      orientation: 'portrait',
-      unit: 'px',
-      format: [canvas.width, canvas.height]
-    });
-    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-    pdf.save('goal-plan.pdf');
-  });
-});
