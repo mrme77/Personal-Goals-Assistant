@@ -50,7 +50,7 @@ Check `app.js` for configuration (e.g., `API_BASE_URL`).
               │
               ▼
    ┌────────────────────┐
-   │     Backend API     │  (optional, e.g. Vercel)
+   │     Backend API     │  (Vercel)
    │ - Persistent storage│
    │ - LLM integration   │
    └────────────────────┘
